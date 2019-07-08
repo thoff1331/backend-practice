@@ -28,16 +28,31 @@ class Todo extends Component {
     {
     }
   };
+  deleteItem = id => {
+    axios
+      .delete(`/api/list/${id}`, {
+        data: {
+          id: id
+        }
+      })
+      .then(res => {
+        this.setState({
+          items: res.data
+        });
+      });
+  };
   render() {
-    let mapped = this.state.items.map(val => {
+    console.log(this.state.items);
+    let mapped = this.state.items.map((val, index) => {
       return (
         <div>
-          <h1>{val}</h1>
-          <button>X</button>
+          <h1 key={index}>{val}</h1>
+          <button onClick={this.deleteItem(val.index)}>X</button>
           <button>Edit</button>
         </div>
       );
     });
+
     return (
       <div>
         <input onChange={this.handleChange} name="input" />
